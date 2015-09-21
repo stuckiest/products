@@ -35,6 +35,7 @@ $(document).ready(function(){
       type: 'GET',
       success: function(data) {
         showProduct(data.product);
+        "<button id='edit_product'>Edit Product</button>"
         console.log('success');
       },
       error: function(data) {
@@ -89,6 +90,50 @@ $(document).ready(function(){
             }
           });
  }); // ends delete
+
+//hide Edit form
+function hideForm(){
+  
+}
+
+// EDIT product
+$(document).on('click', '.product', function() {
+   $('#edit_product').removeClass('hide');
+
+   $.ajax(baseUrl + '/products/' + $(this).data('product-id'),
+          {
+            type: 'GET',
+            success: function(data) {_
+              $('#name').val(data.product.name);
+              $('#base_price').val(data.product.base_price);
+              $('#description').val(data.product.description);
+              $('#quantity_on_hand').val(data.product.quantity_on_hand);
+              $('#color').val(data.product.color);
+              $('#weight').val(data.product.weight);
+              $('.edit').data('product-id', data.product.id);
+            }
+          }
+         )
+  });
+
+  $('.edit').on('click', function() {
+   var name = $('#name').val();
+   var basePrice = $('#base_price').val();
+   var description = $('#description').val();
+   var quantityOnHand = $('#quantity_on_hand').val();
+   var color = $('#color').val();
+   var weight = $('#weight').val();
+
+   var product = { product: {name: name, base_price: basePrice, description: description, quantity_on_hand: quantityOnHand, color: color, weight: weight }};
+   $.ajax(baseUrl + '/products/' + $(this).data('product-id'),
+          {
+            type: 'PUT',
+            data: product,
+            success: function(data) {
+              $('#edit_product').addClass('hide');
+            }
+          });
+  }); // ends edit    
 
 
 
