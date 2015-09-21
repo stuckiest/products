@@ -78,5 +78,20 @@ $(document).ready(function(){
     });
   }); // ends new 
 
+  //DELETE product
+    $(document).on('click', '.delete', function() {
+    var id = $(this).closest('.product').data('product-id');
+    var that = $(this);
+   $.ajax(baseUrl + '/products/' + id, {
+            type: 'DELETE',
+            success: function(data) {
+              that.closest('.product').remove();
+            }
+          });
+ }); // ends delete
+
+
+
+
 
 }); // Ends document Ready function
