@@ -41,9 +41,42 @@ $(document).ready(function(){
       console.log('error');
       }
     });
+  }); //ends show
 
 
-  });
+  ///NEW product
+
+  // $('#add_partial').on('click', function() {
+  //   $.ajax('/add_partial',
+  //          {
+  //            type: 'GET',
+  //            success: function(data) {
+  //              $('body').append(data);
+  //            }
+  //          });
+  // });
+
+  $('.add').on('click', function(){
+    var name = $('#new_name').val();
+    var basePrice = $('#new_base_price').val();
+    var description = $('#new_description').val();
+    var quantityOnHand = $('#new_quantity_on_hand').val();
+    var color = $('#new_color').val();
+    var weight = $('#new_weight').val();
+
+    var product = {product: {name: name, base_price: basePrice, description: description, quantity_on_hand: quantityOnHand, color: color, weight: weight }};
+
+    $.ajax(baseUrl + '/products', {
+       type: 'POST',
+       data: product,
+       success: function(data) {
+        var product = data.product;
+        console.log('success')
+        $('#products').append("<li class='product' data-product-id='" + product.id + "'>" + product.name + "<button class='delete'>Delete</button><button class='show'>Show</button></li>");
+       },
+
+    });
+  }); // ends new 
 
 
 }); // Ends document Ready function
