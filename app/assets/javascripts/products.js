@@ -1,9 +1,9 @@
 $(document).ready(function(){
 
-  var baseURL = 'http://devpoint-ajax-example-server.herokuapp.com/api/v1';
+  var baseUrl = 'http://devpoint-ajax-example-server.herokuapp.com/api/v1';
 
   $('#get_products').click(function() {
-      $.ajax(baseURL + '/products', {
+      $.ajax(baseUrl + '/products', {
         type: 'GET',
         success: function(data) {
           for(index in data.products) {
@@ -16,5 +16,34 @@ $(document).ready(function(){
   
         }
       });
+    }); // Ends get products 
+
+ function showProduct(product) {
+    $.ajax('/get_product', {
+      type: 'GET',
+      data: product,
+      success: function(data) {
+        $('body').html(data);
+      }
     });
-});
+  }
+
+  $(document).on('click', '#show', function() {
+    var id = $(this).closest('.product').data('product-id');
+
+    $.ajax(baseUrl + '/products/' + id, {
+      type: 'GET',
+      success: function(data) {
+        showProduct(data.product);
+        console.log('success');
+      },
+      error: function(data) {
+      console.log('error');
+      }
+    });
+
+
+  });
+
+
+}); // Ends document Ready function
